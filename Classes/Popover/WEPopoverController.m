@@ -6,11 +6,12 @@
 //  Copyright 2010 Werner IT Consultancy. All rights reserved.
 //
 
+#import <QuartzCore/QuartzCore.h>
 #import "WEPopoverController.h"
 #import "WEPopoverParentView.h"
 #import "UIBarButtonItem+WEPopover.h"
 
-#define FADE_DURATION 0.25
+#define FADE_DURATION 0.1
 
 @interface WEPopoverController(Private)
 
@@ -131,13 +132,13 @@
 	}
 	
 	CGRect displayArea = [self displayAreaForView:theView];
-	
+    
 	WEPopoverContainerViewProperties *props = self.containerViewProperties ? self.containerViewProperties : [self defaultContainerViewProperties];
 	WEPopoverContainerView *containerView = [[[WEPopoverContainerView alloc] initWithSize:self.popoverContentSize anchorRect:rect displayArea:displayArea permittedArrowDirections:arrowDirections properties:props] autorelease];
 	popoverArrowDirection = containerView.arrowDirection;
 	
 	UIView *keyView = self.keyView;
-	
+	NSLog(@"bouds: %f,%f", keyView.bounds.size.width, keyView.bounds.size.height);
 	backgroundView = [[WETouchableView alloc] initWithFrame:keyView.bounds];
 	backgroundView.contentMode = UIViewContentModeScaleToFill;
 	backgroundView.autoresizingMask = ( UIViewAutoresizingFlexibleLeftMargin |
@@ -147,17 +148,35 @@
 									   UIViewAutoresizingFlexibleHeight |
 									   UIViewAutoresizingFlexibleBottomMargin);
 	backgroundView.backgroundColor = [UIColor clearColor];
+//    backgroundView.alpha = 0.4;
 	backgroundView.delegate = self;
+    
 	
 	[keyView addSubview:backgroundView];
-	
+  /*  
+    UIView *dim = [[UIView alloc] initWithFrame:backgroundView.frame];
+    dim.backgroundColor = [UIColor blackColor];
+    dim.alpha = 0.4;
+    [backgroundView addSubview:dim];
+	*/
 	containerView.frame = [theView convertRect:containerView.frame toView:backgroundView];
+    NSLog(@"bouds: %f,%f", containerView.frame.size.width, containerView.frame.size.height);
 	
 	[backgroundView addSubview:containerView];
 	
 	containerView.contentView = contentViewController.view;
 	containerView.autoresizingMask = ( UIViewAutoresizingFlexibleLeftMargin |
 									  UIViewAutoresizingFlexibleRightMargin);
+    containerView.contentView.alpha = 1;
+    containerView.layer.shadowColor = [[UIColor blackColor] CGColor];
+    containerView.layer.shadowOpacity  = 0.5;
+    containerView.layer.shadowRadius = 5;
+//    self.view.layer.shadowOpacity = 0.85;
+    containerView.layer.masksToBounds = NO;
+    containerView.layer.shadowOffset = CGSizeMake(0.0, 1.0);
+    containerView.backgroundColor = [UIColor clearColor];
+//    containerView.layer.borderWidth =1.0f;
+//    containerView.layer.borderColor =[[UIColor redColor] CGColor];
 	
 	self.view = containerView;
 	[self updateBackgroundPassthroughViews];
@@ -282,21 +301,21 @@
 	CGFloat bgMargin = 6.0;
 	CGFloat contentMargin = 2.0;
 	
-	ret.leftBgMargin = bgMargin;
+	ret.leftBgMargin = 0.0; //bgMargin;
 	ret.rightBgMargin = bgMargin;
 	ret.topBgMargin = bgMargin;
-	ret.bottomBgMargin = bgMargin;
+	ret.bottomBgMargin = bgMargin+5;
 	ret.leftBgCapSize = imageSize.width/2;
 	ret.topBgCapSize = imageSize.height/2;
 	ret.bgImageName = bgImageName;
-	ret.leftContentMargin = contentMargin;
+	ret.leftContentMargin = 1.0;
 	ret.rightContentMargin = contentMargin;
-	ret.topContentMargin = contentMargin;
-	ret.bottomContentMargin = contentMargin;
+	ret.topContentMargin = 0.0; //contentMargin;
+	ret.bottomContentMargin = 0.0; //contentMargin;
 	ret.arrowMargin = 1.0;
 	
-	ret.upArrowImageName = @"popoverArrowUpSimple.png";
-	ret.downArrowImageName = @"popoverArrowDownSimple.png";
+	ret.upArrowImageName = @"pop_arrow_up.png";
+	ret.downArrowImageName = @"pop_arrow_down.png";
 	ret.leftArrowImageName = @"popoverArrowLeftSimple.png";
 	ret.rightArrowImageName = @"popoverArrowRightSimple.png";
 	return ret;

@@ -6,6 +6,7 @@
 //  Copyright 2010 Werner IT Consultancy. All rights reserved.
 //
 
+#import <QuartzCore/QuartzCore.h>
 #import "WEPopoverContainerView.h"
 
 @implementation WEPopoverContainerViewProperties
@@ -56,6 +57,7 @@ permittedArrowDirections:(UIPopoverArrowDirection)permittedArrowDirections
 		
 		self.clipsToBounds = YES;
 		self.userInteractionEnabled = YES;
+        
 	}
 	return self;
 }
@@ -121,9 +123,10 @@ permittedArrowDirections:(UIPopoverArrowDirection)permittedArrowDirections
 	//If arrow rect origin is < 0 the frame above is extended to include it so we should offset the other rects
 	arrowOffset = CGPointMake(MAX(0, -arrowRect.origin.x), MAX(0, -arrowRect.origin.y));
 	bgRect = CGRectOffset(bgRect, arrowOffset.x, arrowOffset.y);
-	arrowRect = CGRectOffset(arrowRect, arrowOffset.x, arrowOffset.y);
-	
+	arrowRect = CGRectOffset(arrowRect, arrowOffset.x+60, arrowOffset.y);
+    
 	self.frame = theFrame;	
+    self.frame = CGRectMake(7, theFrame.origin.y, theFrame.size.width, theFrame.size.height);
 }																		 
 
 - (CGSize)contentSize {
