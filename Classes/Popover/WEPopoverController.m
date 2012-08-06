@@ -138,7 +138,6 @@
 	popoverArrowDirection = containerView.arrowDirection;
 	
 	UIView *keyView = self.keyView;
-	NSLog(@"bouds: %f,%f", keyView.bounds.size.width, keyView.bounds.size.height);
 	backgroundView = [[WETouchableView alloc] initWithFrame:keyView.bounds];
 	backgroundView.contentMode = UIViewContentModeScaleToFill;
 	backgroundView.autoresizingMask = ( UIViewAutoresizingFlexibleLeftMargin |
@@ -153,14 +152,11 @@
     
 	
 	[keyView addSubview:backgroundView];
-  /*  
     UIView *dim = [[UIView alloc] initWithFrame:backgroundView.frame];
     dim.backgroundColor = [UIColor blackColor];
     dim.alpha = 0.4;
     [backgroundView addSubview:dim];
-	*/
 	containerView.frame = [theView convertRect:containerView.frame toView:backgroundView];
-    NSLog(@"bouds: %f,%f", containerView.frame.size.width, containerView.frame.size.height);
 	
 	[backgroundView addSubview:containerView];
 	
