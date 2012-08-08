@@ -156,6 +156,7 @@
     dim.backgroundColor = [UIColor blackColor];
     dim.alpha = 0.4;
     [backgroundView addSubview:dim];
+    [dim release];
 	containerView.frame = [theView convertRect:containerView.frame toView:backgroundView];
 	
 	[backgroundView addSubview:containerView];
